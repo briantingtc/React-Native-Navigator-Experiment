@@ -25,12 +25,13 @@ var BrandColors = {
   Twitter: '#55acee'
 };
 
-
+var NavBar = require('./Navbar');
 var Bernie = React.createClass({
   _handleNextButtonPress: function() {
     this.props.navigator.push({
       name:'Child',
       component: Child,
+      navigationBar: <NavBar />,
     })
   },
   render: function () {

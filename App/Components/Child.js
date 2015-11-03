@@ -7,6 +7,7 @@
 var React = require('react-native');
 var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
 var NavBar = require('./Navbar');
+var Chat = require('./Chat');
 var {
   AppRegistry,
   StyleSheet,
@@ -27,14 +28,11 @@ var BrandColors = {
 var TabBarItemIOS = TabBarIOS.Item;
 
 var Child = React.createClass({
-  _handleNextButtonPress: function() {
-    this.props.navigator.pop();
-  },
+
   render: function () {
     return (
       <View style={styles.container}>
-
-        <NavBar />
+        <Chat />
       </View>
     );
   }
@@ -54,7 +52,7 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   topContainer: {
     flexDirection: 'row',

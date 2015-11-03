@@ -8,6 +8,8 @@ var React = require('react-native');
 var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
 var Bernie = require('./App/Components/Main');
 var Child = require('./App/Components/Child');
+var NavBar = require('./App/Components/Navbar');
+
 var {
   AppRegistry,
   StyleSheet,
@@ -23,17 +25,26 @@ var {
 
 var bernie = React.createClass({
   _renderScene: function(route, navigator){
-    if (route.name==='Login'){
-      return <Bernie navigator={navigator} />
-    } else if (route.name==='Child') {
-      return <Child navigator={navigator} />
+    switch (route.name) {
+      case "Login":
+        return <Bernie navigator={navigator} />
+        break;
+      case "Child":
+        return <Child navigator={navigator}
+                      />
+        break;
+      default:
+        return <Bernie navigator={navigator} />
+        break;
     }
+    console.log(route.name)
   },
   render: function () {
     return (
       <Navigator
         initialRoute={{name: 'Login'}}
         renderScene={this._renderScene}
+        navigationBar={<NavBar />}
     />
     );
   }
