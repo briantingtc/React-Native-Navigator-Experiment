@@ -2,7 +2,8 @@
 
 var React = require('react-native');
 var styles = require('../Stylesheets/styles');
-
+var Dimensions = require('Dimensions');
+var Dimensions = Dimensions.get('window');
 var {
   AppRegistry,
   StyleSheet,
@@ -17,7 +18,7 @@ var {
 var Settings = React.createClass({
   render: function(){
     return (
-      <View style={{paddingTop: 20, flex: 0.08}}>
+      <View style={styles.headerContainer}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Settings</Text>
         </View>

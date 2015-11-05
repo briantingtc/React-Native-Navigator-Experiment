@@ -6,7 +6,9 @@
 var Dimensions = require('Dimensions')
 var React = require('react-native');
 var Dimensions = Dimensions.get('window')
-var Chat = require('./Chat');
+var MatchList = require('./MatchList');
+var MatchChatHistory = require('./MatchChatHistory');
+var MatchProfile = require('./MatchProfile');
 var BernieManager = require('./BernieManager');
 var Settings = require('./Settings');
 var Main = require('./Main');
@@ -41,10 +43,10 @@ var NavBar = React.createClass({
     }
   },
   navigateToChat: function(){
-    this.setState({currentRoute: "Chat"})
+    this.setState({currentRoute: "MatchList"})
     this.props.navigator.replace({
-      name:'Chat',
-      component: Chat,
+      name:'MatchList',
+      component: MatchList,
     })
   },
   navigateToBernieManager: function(){
@@ -67,7 +69,8 @@ var NavBar = React.createClass({
         flexDirection: 'column',
         position: 'absolute',
         bottom: this.NavHeight(),
-        left:0,}}>
+        left:0,
+        }}>
         <NavBarTop
           isNavBarExpanded = {this.isNavBarExpanded}
           currentRoute = {this.state.currentRoute}/>
@@ -84,7 +87,7 @@ var NavBarTop = React.createClass({
     this.props.isNavBarExpanded();
   },
   render: function(){
-    if (this.props.currentRoute === 'Chat'){
+    if (this.props.currentRoute === 'MatchList'){
       return(
         <View style={styles.navBar}>
           <TouchableHighlight onPress={this._handleMenuButtonPress}>
@@ -94,7 +97,7 @@ var NavBarTop = React.createClass({
               color='#ffffff'
               style={styles.menuBar}/>
           </TouchableHighlight>
-          <Text style={styles.menuText}>Example</Text>
+          <Text style={styles.menuText}>Everyone {'\u25B2'}</Text>
           <Icon
             name='fontawesome|search'
             size={30}
@@ -112,11 +115,6 @@ var NavBarTop = React.createClass({
               color='#ffffff'
               style={styles.menuBar}/>
           </TouchableHighlight>
-          <Icon
-            name='fontawesome|search'
-            size={30}
-            color='#ffffff'
-            style={styles.menuBar}/>
         </View>
       )
     } else if(this.props.currentRoute === 'Settings'){
@@ -195,6 +193,9 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left:0,
+  },
+  navHeader: {
+
   },
   navBar: {
     flexDirection: 'row',

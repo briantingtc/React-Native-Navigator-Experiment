@@ -7,7 +7,9 @@
 var React = require('react-native');
 var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
 var NavBar = require('./Navbar');
-var Chat = require('./Chat');
+var MatchList = require('./MatchList');
+var MatchChatHistory = require('./MatchChatHistory');
+var MatchProfile = require('./MatchProfile');
 var BernieManager = require('./BernieManager');
 var Settings = require('./Settings');
 var Dimensions = require('Dimensions');
@@ -32,14 +34,21 @@ var BrandColors = {
 
 var Main = React.createClass({
   getInitialState: function(){
-    return{route: "Chat"}
+    return{route: "MatchList"}
   },
 
   _renderScene: function(route,navigator){
+    console.log(navigator.getCurrentRoutes())
     switch (route.name) {
-      case "Chat":
-        return <Chat navigator={navigator}/>
+      case "MatchList":
+        return <MatchList navigator={navigator} />
         break;
+      case "MatchMessages":
+        return <MatchChatHistory navigator={navigator} person={route.person} />
+        break;
+      case "MatchProfile":
+       return <MatchProfile navigator={navigator} person={person} />
+       break;
       case "BernieManager":
         return <BernieManager navigator={navigator}/>
         break;
@@ -55,7 +64,7 @@ var Main = React.createClass({
     return (
       <View style={styles.container}>
         <Navigator
-          initialRoute={{name: 'Chat'}}
+          initialRoute={{name: 'MatchList'}}
           renderScene={this._renderScene}
           navigationBar={<NavBar/>}
         />
@@ -64,30 +73,7 @@ var Main = React.createClass({
   }
 });
 
-var BernieManager = React.createClass({
-  render: function(){
-    return (
-      <View style={{paddingTop: 20, flex: 0.08}}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Manage Bernie</Text>
-        </View>
-        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
-      </View>
-    )
-  }
-});
-var Settings = React.createClass({
-  render: function(){
-    return (
-      <View style={{paddingTop: 20, flex: 0.08}}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Settings</Text>
-        </View>
-        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
-      </View>
-    )
-  }
-});
+
 
 
 var styles = StyleSheet.create({

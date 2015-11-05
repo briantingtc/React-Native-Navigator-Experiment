@@ -1,6 +1,8 @@
 'use strict';
 
 var React = require('react-native');
+var Dimensions = require('Dimensions');
+var Dimensions = Dimensions.get('window');
 var styles = require('../Stylesheets/styles');
 
 var {
@@ -17,12 +19,15 @@ var {
 var BernieManager = React.createClass({
   render: function(){
     return (
-      <View style={{paddingTop: 20, flex: 0.08}}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Manage Bernie</Text>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Manage Bernie</Text>
+          </View>
+          <View style={{marginTop: 10,
+                           height: 1,
+                            width: Dimensions.width,
+                  backgroundColor: 'rgba(34,34,34,0.3)'}} />
         </View>
-        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
-      </View>
     )
   }
 });
