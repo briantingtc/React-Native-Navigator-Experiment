@@ -12,27 +12,38 @@ var Chat = React.createClass({
       <View style={{flex: 1}}>
         <Navigator
           renderScene={this._renderScene}
-          initialRoute={{id: 'home'}} />
+          initialRoute={{id: 'Matches'}} />
       </View>
     );
   },
 
   _renderScene(route, navigator) {
-    if (route.id === 'home') {
-      return <CharacterList navigator={navigator} />
-    } else if (route.id === 'character') {
-      return <CharacterDetail navigator={navigator} person={route.person} />
+    if (route.id === 'Matches') {
+      return <MatchList navigator={navigator} />
+    } else if (route.id === 'MatchMessages') {
+      return <MatchChatHistory navigator={navigator} person={route.person} />
+    } else if (route.id === 'MatchProfile') {
+      return <MatchProfile navigator={navigator} person={person}/>
     }
   }
 });
 
-var CharacterDetail = React.createClass({
+var MatchChatHistory = React.createClass({
 
   render() {
     let { person } = this.props;
 
     return (
-      <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center'}}>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>{person.name}</Text>
+          </View>
+          <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
+        </View>
+        <View style={styles.mainContent}>
+
+        </View>
         <Text>{person.name}</Text>
         <Text>{person.mass}</Text>
         <Text>{person.eye_color}</Text>
@@ -42,7 +53,7 @@ var CharacterDetail = React.createClass({
 
 });
 
-var CharacterList = React.createClass({
+var MatchList = React.createClass({
   getInitialState() {
     let dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
@@ -56,23 +67,20 @@ var CharacterList = React.createClass({
       then((response) => response.json()).
       then((response) => {
         this.setState({
-          hasLoaded: true,
           people: this.state.people.cloneWithRows(response.results)
         });
       });
   },
 
   render() {
-    if (!this.state.hasLoaded) {
-      return this._renderLoadingView();
-    }
-
     return (
-      <View style={{paddingTop: 20, flex: 1}}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Chats</Text>
+      <View>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Chats</Text>
+          </View>
+          <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
         </View>
-        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
         <ListView
           renderSeparator={this._renderSeparator}
           dataSource={this.state.people}
@@ -84,6 +92,12 @@ var CharacterList = React.createClass({
   _renderLoadingView() {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Chats</Text>
+          </View>
+          <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
+        </View>
         <ActivityIndicatorIOS />
       </View>
     );
@@ -92,7 +106,7 @@ var CharacterList = React.createClass({
   _renderRow(rowData) {
     return (
       <TouchableHighlight style={styles.row} underlayColor="#ccc"
-        onPress={() => { this.props.navigator.push({id: 'character', person: rowData}) }}>
+        onPress={() => { this.props.navigator.push({id: 'MatchMessages', person: rowData}) }}>
         <View style={styles.chatPerson}>
           <View>
 
@@ -132,6 +146,10 @@ var styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
   header: {
+    paddingTop: 20,
+  },
+  headerContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
   headerText: {

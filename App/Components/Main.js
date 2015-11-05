@@ -5,6 +5,11 @@
 'use strict';
 
 var React = require('react-native');
+var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
+var NavBar = require('./Navbar');
+var Chat = require('./Chat');
+var Dimensions = require('Dimensions');
+var Dimensions = Dimensions.get('window');
 var {
   AppRegistry,
   StyleSheet,
@@ -15,9 +20,6 @@ var {
   Animated,
   Image
   } = React;
-var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
-var Child = require('./Child');
-var TabBarItemIOS = TabBarIOS.Item;
 
 
 var BrandColors = {
@@ -25,40 +27,76 @@ var BrandColors = {
   Twitter: '#55acee'
 };
 
-var NavBar = require('./Navbar');
-var Bernie = React.createClass({
-  _handleNextButtonPress: function() {
-    this.props.navigator.push({
-      name:'Child',
-      component: Child,
-      navigationBar: <NavBar />,
-    })
+var Main = React.createClass({
+  getInitialState: function(){
+    return{route: "Chat"}
+  },
+  _currentTab: function(){
+    switch (this.state.route) {
+      case "Chat":
+        return <Chat  />
+        break;
+      case "Bernie":
+        return <BernieManager  />
+        break;
+      case "Settings":
+        return <Settings />
+      default:
+        return <Chat />
+        break;
+    }
+  },
+
+
+
+
+  _navigateToBernieManager: function(){
+    this.setState({route:"Bernie"})
+  },
+  _navigateToChat: function(){
+    this.setState({route:"Chat"})
+  },
+  _navigateToSettings: function(){
+    this.setState({route:"Settings"})
   },
   render: function () {
     return (
       <View style={styles.container}>
-        <Image
-          style={{width: 150, height: 45,marginLeft:50,marginTop:200,}}
-          source={require('image!logo')}
-        />
-      <TouchableHighlight onPress={() => this._handleNextButtonPress()}>
-        <View
-          style={styles.signInWithFacebookButton}>
-          <Icon
-            name='fontawesome|facebook'
-            size={28}
-            color='#ffffff'
-            style={styles.signInWithFacebookIcon}/>
-          <Text style={styles.signInText}>
-            {'Sign in with Facebook'}
-          </Text>
-        </View>
-      </TouchableHighlight>
-
+        {this._currentTab()}
+        <NavBar
+          navigateToChat={this._navigateToChat}
+          navigateToBernieManager={this._navigateToBernieManager}
+          navigateToSettings={this._navigateToSettings}
+          currentRoute={this.state.route}/>
       </View>
     );
   }
 });
+
+var BernieManager = React.createClass({
+  render: function(){
+    return (
+      <View style={{paddingTop: 20, flex: 0.08}}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Manage Bernie</Text>
+        </View>
+        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
+      </View>
+    )
+  }
+})
+var Settings = React.createClass({
+  render: function(){
+    return (
+      <View style={{paddingTop: 20, flex: 0.08}}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Settings</Text>
+        </View>
+        <View style={{marginTop: 10,height: 1, width: Dimensions.width, backgroundColor: 'rgba(34,34,34,0.3)'}} />
+      </View>
+    )
+  }
+})
 
 
 var styles = StyleSheet.create({
@@ -74,7 +112,7 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   topContainer: {
     flexDirection: 'row',
@@ -90,27 +128,14 @@ var styles = StyleSheet.create({
     color: '#555555',
   },
 
-  signInText: {
-    color: 'white',
-    marginLeft: 5,
-    fontFamily: 'HelveticaNeue-Medium',
-    fontSize: 15
-  },
-  signInWithFacebookButton: {
-    backgroundColor: BrandColors.Facebook,
-    flexDirection: 'row',
+  header: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: 210,
-    padding: 5,
-    borderRadius: 3,
-    marginTop: 200,
   },
-  signInWithFacebookIcon: {
-    width: 28,
-    height: 28,
-    marginLeft: 5
-  }
+  headerText: {
+    color: 'grey',
+    fontSize:30,
+    fontFamily:'HelveticaNeue-Medium'
+  },
 });
 
-module.exports = Bernie;
+module.exports = Main;

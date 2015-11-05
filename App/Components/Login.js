@@ -5,9 +5,6 @@
 'use strict';
 
 var React = require('react-native');
-var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
-var NavBar = require('./Navbar');
-var Chat = require('./Chat');
 var {
   AppRegistry,
   StyleSheet,
@@ -18,6 +15,9 @@ var {
   Animated,
   Image
   } = React;
+var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
+var Main = require('./Main');
+var TabBarItemIOS = TabBarIOS.Item;
 
 
 var BrandColors = {
@@ -25,14 +25,36 @@ var BrandColors = {
   Twitter: '#55acee'
 };
 
-var TabBarItemIOS = TabBarIOS.Item;
-
-var Child = React.createClass({
-
+var NavBar = require('./Navbar');
+var Login = React.createClass({
+  _handleNextButtonPress: function() {
+    this.props.navigator.push({
+      name:'Main',
+      component: Main,
+      navigationBar: <NavBar />,
+    })
+  },
   render: function () {
     return (
       <View style={styles.container}>
-        <Chat />
+        <Image
+          style={{width: 150, height: 45,marginLeft:50,marginTop:200,}}
+          source={require('image!logo')}
+        />
+      <TouchableHighlight onPress={() => this._handleNextButtonPress()}>
+        <View
+          style={styles.signInWithFacebookButton}>
+          <Icon
+            name='fontawesome|facebook'
+            size={28}
+            color='#ffffff'
+            style={styles.signInWithFacebookIcon}/>
+          <Text style={styles.signInText}>
+            {'Sign in with Facebook'}
+          </Text>
+        </View>
+      </TouchableHighlight>
+
       </View>
     );
   }
@@ -52,7 +74,7 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'column',
+    alignItems: 'center',
   },
   topContainer: {
     flexDirection: 'row',
@@ -91,4 +113,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = Child;
+module.exports = Login;

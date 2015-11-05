@@ -33,16 +33,6 @@ var NavBar = React.createClass({
       return 0 - NavExpandedHeight
     }
   },
-
-  _goToChat: function(){
-
-  },
-  _goToSettings: function(){
-
-  },
-  _goToBernie: function(){
-
-  },
   render: function () {
     return (
       <View style={{
@@ -50,59 +40,90 @@ var NavBar = React.createClass({
         position: 'absolute',
         bottom: this.NavHeight(),
         left:0,}}>
-        <View style={styles.navBar}>
-          <TouchableHighlight onPress={this.isNavBarExpanded}>
-            <Icon
-              onPress={this.isNavBarExpanded}
-              name='fontawesome|bars'
-              size={40}
-              color='#ffffff'
-              style={styles.menuBar}/>
-          </TouchableHighlight>
-          <Text style={styles.menuText}>Example</Text>
-          <Icon
-            name='fontawesome|search'
-            size={30}
-            color='#ffffff'
-            style={styles.menuBar}/>
-        </View>
-        <View style={styles.navBarExpanded}>
-          <TouchableHighlight>
-            <View style={styles.navBarExpandedItem}>
-              <Icon
-                name='fontawesome|user'
-                size={50}
-                color='#ffffff'
-                style={styles.navBarExpandedIcon}/>
-              <Text style={styles.navBarExpandedItemTitle}>Train Bernie</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={styles.navBarExpandedItem}>
-              <Icon
-                name='fontawesome|comments'
-                size={50}
-                color='#ffffff'
-                style={styles.navBarExpandedIcon}/>
-              <Text style={styles.navBarExpandedItemTitle}>Chat</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight>
-            <View style={styles.navBarExpandedItem}>
-              <Icon
-                name='fontawesome|cogs'
-                size={50}
-                color='#ffffff'
-                style={styles.navBarExpandedIcon}/>
-              <Text style={styles.navBarExpandedItemTitle}>Settings</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        <NavBarTop
+          isNavBarExpanded = {this.isNavBarExpanded}
+          route = {this.props.route}/>
+        <NavBarExpanded
+          navigateToChat={this.props.navigateToChat}
+          navigateToBernieManager={this.props.navigateToBernieManager}
+          navigateToSettings={this.props.navigateToSettings} />
       </View>
     );
   }
 });
+var NavBarTop = React.createClass({
+  _handleMenuButtonPress: function(){
+    this.props.isNavBarExpanded();
+  },
+  render: function(){
+    return(
+      <View style={styles.navBar}>
+        <TouchableHighlight onPress={this._handleMenuButtonPress}>
+          <Icon
+            name='fontawesome|bars'
+            size={40}
+            color='#ffffff'
+            style={styles.menuBar}/>
+        </TouchableHighlight>
+        <Text style={styles.menuText}>Example</Text>
+        <Icon
+          name='fontawesome|search'
+          size={30}
+          color='#ffffff'
+          style={styles.menuBar}/>
+      </View>
+    )
+  }
+});
 
+
+var NavBarExpanded = React.createClass({
+  _handleChatButtonPress: function(){
+    this.props.navigateToChat();
+  },
+  _handleBernieManagerButtonPress: function(){
+    this.props.navigateToBernieManager();
+  },
+  _handleSettingsButtonPress: function(){
+    this.props.navigateToSettings();
+  },
+  render: function(){
+    return(
+      <View style={styles.navBarExpanded}>
+        <TouchableHighlight onPress={this._handleBernieManagerButtonPress}>
+          <View style={styles.navBarExpandedItem}>
+            <Icon
+              name='fontawesome|user'
+              size={50}
+              color='#ffffff'
+              style={styles.navBarExpandedIcon}/>
+            <Text style={styles.navBarExpandedItemTitle}>Train Bernie</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._handleChatButtonPress}>
+          <View style={styles.navBarExpandedItem}>
+            <Icon
+              name='fontawesome|comments'
+              size={50}
+              color='#ffffff'
+              style={styles.navBarExpandedIcon}/>
+            <Text style={styles.navBarExpandedItemTitle}>Chat</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._handleSettingsButtonPress}>
+          <View style={styles.navBarExpandedItem}>
+            <Icon
+              name='fontawesome|cogs'
+              size={50}
+              color='#ffffff'
+              style={styles.navBarExpandedIcon}/>
+            <Text style={styles.navBarExpandedItemTitle}>Settings</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+});
 
 var styles = StyleSheet.create({
   container: {
