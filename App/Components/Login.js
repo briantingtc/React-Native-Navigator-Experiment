@@ -31,7 +31,6 @@ var Login = React.createClass({
     this.props.navigator.push({
       name:'Main',
       component: Main,
-      navigationBar: <NavBar />,
     })
   },
   render: function () {

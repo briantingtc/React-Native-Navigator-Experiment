@@ -8,7 +8,6 @@ var React = require('react-native');
 var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
 var Login = require('./App/Components/Login');
 var Main = require('./App/Components/Main');
-var NavBar = require('./App/Components/Navbar');
 
 var {
   AppRegistry,
@@ -25,7 +24,6 @@ var {
 
 var bernie = React.createClass({
   _renderScene: function(route, navigator){
-    console.log(navigator.getCurrentRoutes())
     switch (route.name) {
       case "Login":
         return <Login navigator={navigator} />
@@ -51,4 +49,4 @@ var bernie = React.createClass({
 
 
 
-AppRegistry.registerComponent('bernie', () => bernie);
+AppRegistry.registerComponent('bernie', () => Main);

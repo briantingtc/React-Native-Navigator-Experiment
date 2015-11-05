@@ -8,6 +8,8 @@ var React = require('react-native');
 var { Icon, TabBarIOS, Spinner} = require('react-native-icons');
 var NavBar = require('./Navbar');
 var Chat = require('./Chat');
+var BernieManager = require('./BernieManager');
+var Settings = require('./Settings');
 var Dimensions = require('Dimensions');
 var Dimensions = Dimensions.get('window');
 var {
@@ -18,7 +20,8 @@ var {
   ScrollView,
   TouchableHighlight,
   Animated,
-  Image
+  Image,
+  Navigator
   } = React;
 
 
@@ -31,43 +34,31 @@ var Main = React.createClass({
   getInitialState: function(){
     return{route: "Chat"}
   },
-  _currentTab: function(){
-    switch (this.state.route) {
+
+  _renderScene: function(route,navigator){
+    switch (route.name) {
       case "Chat":
-        return <Chat  />
+        return <Chat navigator={navigator}/>
         break;
-      case "Bernie":
-        return <BernieManager  />
+      case "BernieManager":
+        return <BernieManager navigator={navigator}/>
         break;
       case "Settings":
-        return <Settings />
+        return <Settings navigator={navigator}/>
       default:
-        return <Chat />
+        return <Settings navigator={navigator}/>
         break;
     }
   },
 
-
-
-
-  _navigateToBernieManager: function(){
-    this.setState({route:"Bernie"})
-  },
-  _navigateToChat: function(){
-    this.setState({route:"Chat"})
-  },
-  _navigateToSettings: function(){
-    this.setState({route:"Settings"})
-  },
   render: function () {
     return (
       <View style={styles.container}>
-        {this._currentTab()}
-        <NavBar
-          navigateToChat={this._navigateToChat}
-          navigateToBernieManager={this._navigateToBernieManager}
-          navigateToSettings={this._navigateToSettings}
-          currentRoute={this.state.route}/>
+        <Navigator
+          initialRoute={{name: 'Chat'}}
+          renderScene={this._renderScene}
+          navigationBar={<NavBar/>}
+        />
       </View>
     );
   }
@@ -84,7 +75,7 @@ var BernieManager = React.createClass({
       </View>
     )
   }
-})
+});
 var Settings = React.createClass({
   render: function(){
     return (
@@ -96,7 +87,7 @@ var Settings = React.createClass({
       </View>
     )
   }
-})
+});
 
 
 var styles = StyleSheet.create({

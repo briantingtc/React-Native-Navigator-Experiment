@@ -6,6 +6,11 @@
 var Dimensions = require('Dimensions')
 var React = require('react-native');
 var Dimensions = Dimensions.get('window')
+var Chat = require('./Chat');
+var BernieManager = require('./BernieManager');
+var Settings = require('./Settings');
+var Main = require('./Main');
+
 var {
   AppRegistry,
   StyleSheet,
@@ -21,8 +26,10 @@ var NavExpandedHeight = Dimensions.height/5
 
 var NavBar = React.createClass({
   getInitialState: function(){
-    return{expanded: false}
+    return{expanded: false,
+       currentRoute: this.props.navigator.getCurrentRoutes()[0].name}
   },
+
   isNavBarExpanded: function(){
     this.setState({expanded: !this.state.expanded})
   },
@@ -33,6 +40,27 @@ var NavBar = React.createClass({
       return 0 - NavExpandedHeight
     }
   },
+  navigateToChat: function(){
+    this.setState({currentRoute: "Chat"})
+    this.props.navigator.replace({
+      name:'Chat',
+      component: Chat,
+    })
+  },
+  navigateToBernieManager: function(){
+    this.setState({currentRoute: "BernieManager"})
+    this.props.navigator.replace({
+      name:'BernieManager',
+      component: BernieManager,
+    })
+  },
+  navigateToSettings: function(){
+    this.setState({currentRoute: "Settings"})
+    this.props.navigator.replace({
+      name:'Settings',
+      component: Settings,
+    })
+  },
   render: function () {
     return (
       <View style={{
@@ -42,11 +70,11 @@ var NavBar = React.createClass({
         left:0,}}>
         <NavBarTop
           isNavBarExpanded = {this.isNavBarExpanded}
-          route = {this.props.route}/>
+          currentRoute = {this.state.currentRoute}/>
         <NavBarExpanded
-          navigateToChat={this.props.navigateToChat}
-          navigateToBernieManager={this.props.navigateToBernieManager}
-          navigateToSettings={this.props.navigateToSettings} />
+          navigateToChat={this.navigateToChat}
+          navigateToBernieManager={this.navigateToBernieManager}
+          navigateToSettings={this.navigateToSettings} />
       </View>
     );
   }
@@ -56,23 +84,59 @@ var NavBarTop = React.createClass({
     this.props.isNavBarExpanded();
   },
   render: function(){
-    return(
-      <View style={styles.navBar}>
-        <TouchableHighlight onPress={this._handleMenuButtonPress}>
+    if (this.props.currentRoute === 'Chat'){
+      return(
+        <View style={styles.navBar}>
+          <TouchableHighlight onPress={this._handleMenuButtonPress}>
+            <Icon
+              name='fontawesome|bars'
+              size={40}
+              color='#ffffff'
+              style={styles.menuBar}/>
+          </TouchableHighlight>
+          <Text style={styles.menuText}>Example</Text>
           <Icon
-            name='fontawesome|bars'
-            size={40}
+            name='fontawesome|search'
+            size={30}
             color='#ffffff'
             style={styles.menuBar}/>
-        </TouchableHighlight>
-        <Text style={styles.menuText}>Example</Text>
-        <Icon
-          name='fontawesome|search'
-          size={30}
-          color='#ffffff'
-          style={styles.menuBar}/>
-      </View>
-    )
+        </View>
+      )
+    } else if(this.props.currentRoute === 'BernieManager'){
+      return(
+        <View style={styles.navBar}>
+          <TouchableHighlight onPress={this._handleMenuButtonPress}>
+            <Icon
+              name='fontawesome|bars'
+              size={40}
+              color='#ffffff'
+              style={styles.menuBar}/>
+          </TouchableHighlight>
+          <Icon
+            name='fontawesome|search'
+            size={30}
+            color='#ffffff'
+            style={styles.menuBar}/>
+        </View>
+      )
+    } else if(this.props.currentRoute === 'Settings'){
+      return(
+        <View style={styles.navBar}>
+          <TouchableHighlight onPress={this._handleMenuButtonPress}>
+            <Icon
+              name='fontawesome|bars'
+              size={40}
+              color='#ffffff'
+              style={styles.menuBar}/>
+          </TouchableHighlight>
+          <Icon
+            name='fontawesome|sign-out'
+            size={30}
+            color='#ffffff'
+            style={styles.menuBar}/>
+        </View>
+      )
+    }
   }
 });
 
@@ -171,7 +235,7 @@ var styles = StyleSheet.create({
   menuText: {
     fontFamily: 'HelveticaNeue-Medium',
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
   }
 });
 
